@@ -11,15 +11,15 @@ dna=Seq(dna)
 #ATGcount is needed to count start codons, so count an amount of possible coding sequences 
 ATGcount=dna.count('ATG')
 print(ATGcount, " ATG are found")
-ii=0
+
 #CDSs is a list of possible coding DNA sequences which start from ATG start codon to the end of a sequence
 CDSs=[]
+ii=0
 find_CDS=len(dna)
 while ii<ATGcount:
     find_CDS=dna.rfind('ATG',end=find_CDS)
     CDS=str(dna[find_CDS:])        
     CDSs+=[CDS]
-    #dna=dna[:find_CDS]
     ii=ii+1
     
 #followed loop is neeeded to modify sequences in CDSs making them mulpiple of 3
