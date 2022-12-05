@@ -29,7 +29,7 @@ for sequence in CDSs:
     lenght=float(len(sequence))
     if lenght%3!=0:
         sequence=MutableSeq(sequence)
-        sequence=sequence+"N    
+        sequence=sequence+"N"    
         if float(len(sequence))%3!=0:
             sequence=sequence+"N"                
     CDSs_full_codon+=[sequence]
