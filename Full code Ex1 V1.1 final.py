@@ -1,8 +1,8 @@
-
 from Bio.Seq import Seq
 from Bio.Blast import NCBIWWW
 from Bio.Blast import NCBIXML
 from Bio.Seq import MutableSeq
+
 # For input DNA sequence
 dna=input('paste your DNA sequence: ')
 dna=dna.upper()
@@ -20,26 +20,21 @@ while ii<ATGcount:
     CDS=str(dna[find_CDS:])        
     CDSs+=[CDS]
     #dna=dna[:find_CDS]
-    
     ii=ii+1
     
-print(CDSs)
-
-#followed loop (str 30-42) is neeeded to modify sequences in CDSs making them mulpiple of 3
+#followed loop is neeeded to modify sequences in CDSs making them mulpiple of 3
 #(with responce to ByoPython warning, that if sequence is not multiple of 3 it can cause mistakes)
 CDSs_full_codon=[]
 for sequence in CDSs:
     lenght=float(len(sequence))
-    
     if lenght%3!=0:
         sequence=MutableSeq(sequence)
-        sequence=sequence+"N"
-        
+        sequence=sequence+"N    
         if float(len(sequence))%3!=0:
-            sequence=sequence+"N"
-                     
+            sequence=sequence+"N"                
     CDSs_full_codon+=[sequence]
-print(CDSs_full_codon)    
+    
+
 # To get RNA and protein sequences of all of the CDSs from CDSs list
 proteinforblast=[]
 for dnaseq in CDSs_full_codon:
@@ -54,8 +49,8 @@ for dnaseq in CDSs_full_codon:
     print(protein)
     print('\n')
     proteinforblast+=[protein]
-print(proteinforblast)
-#Protein sequences are transfered to NCBI BLAST; as a result we get a title of alignment and E value, alignments with E value < 0.0001 can be 
+
+#Protein sequences are transfered to NCBI BLAST for processing; as a result we get a title of alignment, E value, and a bit score of alignments if e-value < 0.0001
 evalue=0.0001
 ct=0
 for protein_blast in proteinforblast:
@@ -66,22 +61,12 @@ for protein_blast in proteinforblast:
     print: (ct, ' sequences are found:')
     for alignment in blast_record.alignments:
         print ('\n')
-        
         print('For aligment: ', alignment.title)
         for hsp in alignment.hsps:
             ct+=1
             if hsp.expect < evalue:
-                
-                
-                print ('\n')
-                
+                print ('\n')   
                 print('*********alignment**********')
-                print('sequence: ', alignment.title)
+                print('Sequence: ', alignment.title)
                 print('E value: ', hsp.expect)
-                #print(hsp.query [0:75]+ '...')
-                #print(hsp.match [0:75]+ '...')
-                #print(hsp.sbjct [0:75]+ '...')
-                print: (ct, ' sequences are found:')
-            else:
-                print('E value: ', hsp.expect)
-                print: (ct, ' sequences are found:')
+                print("Bit score: ", hsp.bits)                          
